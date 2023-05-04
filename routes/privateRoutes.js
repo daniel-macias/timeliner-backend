@@ -7,7 +7,7 @@ const { checkUser } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.use(checkUser);
+//router.use(checkUser);
 
 //router.get("/", getPrivateData); //Esto solo se agrega para tener algo que mostrar en el path de / en el get
 

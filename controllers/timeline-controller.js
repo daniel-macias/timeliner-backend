@@ -67,10 +67,6 @@ const getTimelinesByUserId = async (req, res, next) => {
 const createTimeline = async (req, res, next) => {
 
   const { name, description, userId } = req.body;
- 
-  console.log("----------------------------------------------------------");
-  console.log(req);
-  console.log("----------------------------------------------------------");
 
   const createdTimeline = new Timeline({
     name,
@@ -81,7 +77,7 @@ const createTimeline = async (req, res, next) => {
   let user;
   try {
     user = await User.findById(userId);
-    
+
   } catch (err) {
     const error = new HttpError(
       'Creating timeline failed, please try again.',
@@ -103,6 +99,9 @@ const createTimeline = async (req, res, next) => {
     await user.save({ session: sess });
     await sess.commitTransaction();
 
+    res.status(201).json({ timeline: createdTimeline });
+
+
   } catch (err) {
     const error = new HttpError(
       'Creating timeline failed, please try again.',
@@ -112,13 +111,12 @@ const createTimeline = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json({ timeline: createdTimeline });
 };
 
 //Updates a Timeline
 const updateTimeline = async (req, res, next) => {
 
-  const { title, body } = req.body;
+  const { name, description, image, timeEvents,  creator} = req.body;
   const timelineId = req.params.nid;
 
   let timeline;
@@ -132,13 +130,15 @@ const updateTimeline = async (req, res, next) => {
     return next(error);
   }
 
-  if (timeline.creator.toString() !== req.userData.userId) {
+  if (timeline.creator.toString() !== creator) {
     const error = new HttpError('You are not allowed to edit this timeline.', 401);
     return next(error);
   }
 
-  timeline.title = title;
-  timeline.body = body;
+  timeline.name = name;
+  timeline.description = description;
+  timeline.image = image;
+  timeline.timeEvents = timeEvents;
 
   try {
     await timeline.save();

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TimelineSchema = new Schema({
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   description: { type: String, required: true },
   image: { type: String},
-  values: [{ type: Object, ref: 'Values'}],
+  timeEvents: [{ type: mongoose.Types.ObjectId, ref: 'TimeEvent'}],
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 });
 
