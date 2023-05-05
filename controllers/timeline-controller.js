@@ -33,12 +33,17 @@ const getTimelineById = async (req, res, next) => {
 
 //Find Timeline based on the user id
 const getTimelinesByUserId = async (req, res, next) => {
-  const userId = req.userData.userId;
-  
+  const userId = req.params.uid;
+
+  console.log("COOKIE COLLECTED");
+  console.log(req.cookies.userEmail);
+  console.log("UID")
+  console.log(userId);
+
   let userWithTimelines;
+  
   try {
-    userWithTimelines = await User.findById(userId).populate('timelines');
-    console.log("AAAA", userWithTimelines);
+    userWithTimelines = await User.findById(userId);
   } catch (err) {
     const error = new HttpError(
       'Fetching timelines failed, please try again later.',
@@ -47,16 +52,20 @@ const getTimelinesByUserId = async (req, res, next) => {
     return next(error);
   }
 
-  if (!userWithTimelines || userWithTimelines.timelines.length === 0) {
+  if (!userWithTimelines) {
     return next(
       new HttpError('Could not find timelines for the provided user id.', 404)
     );
   }
 
+  if(userWithTimelines.email != req.cookies.userEmail) {
+    return next(
+      new HttpError('You are not allowed to access this information.', 403)
+    );
+  }
+
   res.json({
-    timelines: userWithTimelines.timelines.map(timeline =>
-      timeline.toObject({ getters: true })
-    )
+    timelines: userWithTimelines.timelines
   });
 };
 

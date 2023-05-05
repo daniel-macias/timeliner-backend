@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/timelines/:nid', timelineController.getTimelineById);
 
-router.get('/user/', timelineController.getTimelinesByUserId);
+router.get('/user/:uid', timelineController.getTimelinesByUserId);
 
 router.route("/timelines").post(timelineController.createTimeline);
 
