@@ -36,7 +36,7 @@ const getTimelinesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
   console.log("COOKIE COLLECTED");
-  console.log(req.cookies.userEmail);
+  console.log(req.cookies);
   console.log("UID")
   console.log(userId);
 
@@ -55,12 +55,6 @@ const getTimelinesByUserId = async (req, res, next) => {
   if (!userWithTimelines) {
     return next(
       new HttpError('Could not find timelines for the provided user id.', 404)
-    );
-  }
-
-  if(userWithTimelines.email != req.cookies.userEmail) {
-    return next(
-      new HttpError('You are not allowed to access this information.', 403)
     );
   }
 

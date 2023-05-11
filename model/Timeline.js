@@ -8,7 +8,7 @@ const TimelineSchema = new Schema({
   image: { type: String},
   timeEvents: [{ type: mongoose.Types.ObjectId, ref: 'TimeEvent'}],
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
-});
+},{ timestamps: true });
 
 const Timeline = mongoose.model('Timeline', TimelineSchema);
 
