@@ -69,3 +69,17 @@ module.exports.login = async (req, res) => {
     res.json({ errors, status: false });
   }
 };
+
+module.exports.getUserIdByEmail = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const user = await User.findOne({ email });
+    if (user) {
+      res.status(200).json({ user: user._id, status: true });
+    }else {
+      res.status(404).json({ error: "User not found", status: false });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message, status: false });
+  }
+};
