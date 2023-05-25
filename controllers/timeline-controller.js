@@ -9,7 +9,6 @@ const getTimelineById = async (req, res, next) => {
   const timelineId = req.params.nid;
 
   let timeline;
-  console.log(timelineId);
   try {
     timeline = await Timeline.findById(timelineId);
   } catch (err) {
@@ -34,10 +33,7 @@ const getTimelineById = async (req, res, next) => {
 //Find Timeline based on the user id
 const getTimelinesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-
-  console.log("COOKIE COLLECTED");
   console.log(req.cookies);
-  console.log("UID")
   console.log(userId);
 
   let userWithTimelines;
